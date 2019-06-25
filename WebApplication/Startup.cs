@@ -38,9 +38,12 @@ namespace WebApplication
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            //app.UseWelcomePage(); //middleware pre welcome stranku
+            //app.UseWelcomePage("/"); //welcomepage middleware handluje vsetky requesty na root url kedze je definovana skor ako mvc middleware/// request URL "~/" sa nikdy nedostane na spracovanie do MVC middlewareu
+            //TIP You should always consider the order of middleware when adding to the Configure method. Middleware added earlier in the pipeline will run(and potentially return a response) before middleware added later.
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage(); //nepouzivat na PROD (kvoli security)
             }
             else
             {
@@ -48,6 +51,8 @@ namespace WebApplication
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            //app.UseStatusCodePages(); //error stranka pre Status code errory (pr. 404 zobrazi --> Status Code: 404; Not Found)
+            //app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}"); //umoznuje zobrazovat custom stranku napr pre 404 status code
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
